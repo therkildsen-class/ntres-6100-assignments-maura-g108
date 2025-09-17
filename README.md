@@ -12,8 +12,8 @@ Please use the following table to grade the student's assignment:
 
 | Assignment# | Fully completed | Partially completed | Not completed |
 |:-----------:|:---------------:|:-------------------:|:-------------:|
-|      1      |        X         |                     |               |
-|      2      |        X         |                     |               |
+|      1      |        X        |                     |               |
+|      2      |        X        |                     |               |
 |      3      |                 |                     |               |
 |      4      |                 |                     |               |
 |      5      |                 |                     |               |
@@ -23,3 +23,5 @@ Please use the following table to grade the student's assignment:
 |      9      |                 |                     |               |
 
 `Assignment 2: https://github.com/maura-g108/Fictional-Repository`
+
+`Assignment 3: https://maura-g108.github.io/assignment-3-mfg64/`
