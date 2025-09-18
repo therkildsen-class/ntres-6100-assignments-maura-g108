@@ -40,3 +40,57 @@ select(coronavirus, country, lat, long)
 select(coronavirus, date:cases) #all columns to and including cases
 
 select(coronavirus, 1:3)
+
+select(coronavirus, contains('y'), everything()) # includes all columns that contain '', everything will paste the remaining columns
+
+
+
+coronavirus_us <- filter(coronavirus, country == "US")
+coronavirus_us2 <- select(coronavirus_us, -lat, -long, -province)
+
+coronavirus |> 
+  filter(country == "US") |>  
+  select(-lat, -long, -province) # equivalent to above
+
+
+coronavirus |> 
+  filter(type == "death", country %in% c("US", "Canada", "Mexico")) |> 
+  select(country, date, cases) |> 
+  ggplot() +
+  geom_line(mapping = aes(x = date, y = cases, color = country))
+
+
+# Vaccine data -------------------------------------------------------------------------
+
+
+
+vacc <- read_csv("https://raw.githubusercontent.com/RamiKrispin/coronavirus/main/csv/covid19_vaccine.csv")
+
+View(vacc)
+
+
+
+# Summarize ---------------------------------------------------------------
+
+vacc |> 
+  filter(date == max(date)) |> 
+  select(country_region, continent_name, people_at_least_one_dose, population) |> 
+  mutate(vaxxrate = round(people_at_least_one_dose/population, 2))
+
+vacc <- read_csv("https://raw.githubusercontent.com/RamiKrispin/coronavirus/main/csv/covid19_vaccine.csv")
+
+vacc |> 
+  filter(date == max(date)) |>
+  select(country_region, continent_name, doses_admin, people_at_least_one_dose, population) |> 
+  mutate(doses_per_vaxxed = doses_admin/people_at_least_one_dose) |> 
+  filter(doses_per_vaxxed > 3) |> 
+  arrange(-doses_per_vaxxed)
+  
+
+vr <- vacc |> 
+  filter(date == max(date)) |> 
+  select(country_region, continent_name, people_at_least_one_dose, population) |> 
+  mutate(vaxxrate = people_at_least_one_dose/population) |> 
+  filter(vaxxrate > 0.9) |> 
+  arrange(-vaxxrate) |> 
+  head(5)
