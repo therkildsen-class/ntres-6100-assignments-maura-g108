@@ -1,0 +1,94 @@
+---
+title: "lab4"
+format: html
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+library(dslabs) #install.packages("dslabs")
+
+# After you have loaded the dslabs package, you can access the data stored in `gapminder`. Let's look at the top 5 lines 
+gapminder <- gapminder |> as_tibble()
+```
+
+```{r}
+View(gapminder)
+
+q1.1 <- gapminder |> 
+  select(country, year, population) |> 
+  filter(year == "2015")|>
+  arrange(-population) |> # The top 5 countries by population in 2015 are China, India, US, Indonesia, and Brazil
+  head(5)
+
+View(q1.1)
+
+q1.2 <- gapminder |> 
+  select(country, year, population) |> 
+  filter(country %in% c("China", "India", "United States", "Indonesia", "Brazil")) |> ggplot() +
+  geom_line(mapping = aes(x = year, y = population, color = country))
+
+q1.2
+  
+```
+
+```{r}
+q2 <- gapminder |> 
+  select(country, year, infant_mortality) |> 
+  filter(country %in% c("Turkey", "Poland", "South Korea", "Russia", "Vietnam", "South Africa")) |> 
+  filter(year == "2015") |> 
+  arrange(infant_mortality)
+
+View(q2)
+```
+
+```{r}
+q3 <- gapminder |> 
+  filter(year == "2000") |> 
+  mutate(per_capita_gdp = gdp/population) |> 
+  ggplot() +
+  geom_point(mapping = aes(x = per_capita_gdp, y = fertility)) +
+  geom_smooth(mapping = aes(x = per_capita_gdp, y = fertility), method = "lm")
+q3
+```
+
+```{r}
+q4 <- gapminder |> 
+  filter(year == "2000") |> 
+  mutate(per_capita_gdp = gdp/population) |> 
+  ggplot() +
+  geom_point(mapping = aes(x = per_capita_gdp, y = fertility, color = continent)) +
+  geom_smooth(mapping = aes(x = per_capita_gdp, y = fertility, color = continent), method = "lm")
+  q4
+```
+
+```{r}
+q5 <- gapminder |> 
+  filter(year==2015) |>
+  group_by(continent) |>
+  summarize(population_in_billion=sum(population)/10^9) |>
+  ggplot(aes(x=continent, y=population_in_billion)) +
+  geom_col()
+q5
+  
+```
+
+```{r}
+q6 <- gapminder |> 
+  filter(year == "2015") |> 
+  summarise(mean(life_expectancy))
+
+q6
+```
+
+```{r}
+q7 <- gapminder |> 
+  filter(year == "2015") |> 
+  filter(continent %in% c("Europe", "Africa")) |> 
+  group_by(continent) |> 
+  summarise(mean_life_expt = mean(life_expectancy)) |> 
+  summarise(difference = diff(mean_life_expt))
+
+q7
+  
+```
