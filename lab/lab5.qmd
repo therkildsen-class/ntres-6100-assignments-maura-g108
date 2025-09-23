@@ -1,0 +1,50 @@
+---
+title: "lab5"
+format: gfm
+editor: visual
+---
+
+```{r}
+# Load required packages
+library(tidyverse)
+library(knitr)
+
+# Read in the data
+titanic <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/Titanic.csv")
+
+# Let's look at the top 5 lines of the dataset
+head(titanic, n = 5) %>%
+  kable()
+```
+
+```{r}
+notes <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/Notes.csv")
+kable(notes)
+```
+
+```{r}
+length(titanic$PassengerId)
+q1 <- titanic |> 
+  summarise(survival_count = sum(Survived), dead_count = length(PassengerId)-sum(Survived)) |> 
+  mutate(survival_rate = survival_count/(survival_count+dead_count))
+
+kable(head(q1))
+```
+
+```{r}
+q2 <- titanic |> 
+  count(Sex)
+
+q2
+
+q2.1 <- titanic |> 
+  group_by(Pclass) |> 
+  count(Sex)
+
+q2.1
+
+ggplot(data = q2.1, mapping = aes(x = Sex, y = n)) +
+  geom_col() +
+  facet_wrap(~Pclass)
+```
+
