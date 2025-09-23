@@ -48,3 +48,11 @@ ggplot(data = q2.1, mapping = aes(x = Sex, y = n)) +
   facet_wrap(~Pclass)
 ```
 
+```{r}
+q3 <- titanic |> 
+  group_by(Sex) |> 
+  count(Survived)
+
+q3
+```
+
