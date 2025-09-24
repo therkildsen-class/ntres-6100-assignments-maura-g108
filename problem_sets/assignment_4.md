@@ -184,7 +184,7 @@ ggplot(economist_data, mapping = aes(x = Region)) +
 
 #### 1.13 You have now created a variety of different plots of the same dataset. Which of your plots do you think are the most informative? Describe briefly the major trends that you see in the data.
 
-Answer: I think that plots 1.4, 1.7, 1.9, and 1.11 are the most
+Answer: *I think that plots 1.4, 1.7, 1.9, and 1.11 are the most
 informative. Basically, plots that give more information (without
 looking too crazy) are more desirable over plots that give less
 information. From these plots, some major trends I see in the data are:
@@ -193,7 +193,7 @@ countries have a higher HDI than other regions, while Sub-Saharan
 African countries have a lower relative HDI; some Asia Pacific countries
 have a high HDI while other Asia Pacific countries have a low HDI;
 Eastern European and Central Asian countries have a relatively
-high/moderate HDI with a low CPI… etc
+high/moderate HDI with a low CPI… etc*
 
 <br> <br>
 
