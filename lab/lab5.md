@@ -135,3 +135,124 @@ ggplot(data = q2.1, mapping = aes(x = Sex, y = n)) +
 ```
 
 ![](lab5_files/figure-commonmark/unnamed-chunk-4-1.png)
+
+``` r
+q3 <- titanic |>
+  mutate(survived = ifelse(Survived==0, "no", "yes")) |>
+  group_by(Sex, survived) |>
+  count() |>
+  group_by(Sex) |>
+  mutate(percentage = round(n/sum(n)*100, 2))
+kable(q3)
+```
+
+| Sex    | survived |   n | percentage |
+|:-------|:---------|----:|-----------:|
+| female | no       |  81 |      25.80 |
+| female | yes      | 233 |      74.20 |
+| male   | no       | 468 |      81.11 |
+| male   | yes      | 109 |      18.89 |
+
+``` r
+q4 <- titanic |>
+  mutate(age_info = ifelse(is.na(Age), "missing", "available")) |>
+  count(age_info)
+kable(q4)
+```
+
+| age_info  |   n |
+|:----------|----:|
+| available | 714 |
+| missing   | 177 |
+
+``` r
+titanic |>
+  filter(!is.na(Age)) |>
+  ggplot(aes(x=Age, fill=Sex)) +
+  geom_histogram() +
+  facet_grid(Pclass~Sex)
+```
+
+    `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+![](lab5_files/figure-commonmark/unnamed-chunk-7-1.png)
+
+``` r
+titanic |>
+  filter(!is.na(Age)) |>
+  mutate(survived = ifelse(Survived==0, "no", "yes")) |>
+  ggplot(aes(x=Age, fill=survived)) +
+  geom_histogram(position="stack", color="black") +
+  facet_grid(Sex~Pclass)
+```
+
+    `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+![](lab5_files/figure-commonmark/unnamed-chunk-8-1.png)
+
+``` r
+titanic |>
+  mutate(n_family=SibSp+Parch) |>
+  ggplot(aes(x=n_family)) +
+  geom_bar() +
+  scale_x_continuous(breaks = 0:10)
+```
+
+![](lab5_files/figure-commonmark/unnamed-chunk-9-1.png)
+
+``` r
+titanic |>
+  mutate(n_family=SibSp+Parch, with_family=ifelse(n_family>0, "yes", "no")) |>
+  ggplot(aes(x=with_family)) +
+  geom_bar() +
+  coord_flip()
+```
+
+![](lab5_files/figure-commonmark/unnamed-chunk-9-2.png)
+
+``` r
+titanic |>
+  mutate(n_family=SibSp+Parch) |>
+  ggplot(aes(x=n_family)) +
+  geom_bar() +
+  scale_x_continuous(breaks = 0:10) +
+  facet_wrap(~Pclass, ncol = 1)
+```
+
+![](lab5_files/figure-commonmark/unnamed-chunk-10-1.png)
+
+``` r
+titanic |>
+  mutate(n_family = SibSp+Parch, ticket_class = as.character(Pclass)) |>
+  ggplot(aes(x = n_family, fill = ticket_class)) +
+  geom_bar(color = "black", position = "fill") +
+  scale_x_continuous(breaks = 0:10) +
+  ylab("proportion") +
+  coord_flip()
+```
+
+![](lab5_files/figure-commonmark/unnamed-chunk-10-2.png)
+
+``` r
+titanic |>
+  group_by(Ticket) |>
+  mutate(n_ticket=n(), fare_per_ticket = Fare/n_ticket) |>
+  ungroup() |>
+  summarise(average_fare = mean(fare_per_ticket))
+```
+
+    # A tibble: 1 × 1
+      average_fare
+             <dbl>
+    1         17.8
+
+``` r
+titanic |>
+  group_by(Ticket) |>
+  mutate(n_ticket=n(), fare_per_ticket = Fare/n_ticket, ticket_class=as.character(Pclass)) |>
+  ggplot(aes(x=fare_per_ticket)) +
+  geom_histogram(bins = 100) +
+  facet_wrap(~ticket_class, ncol = 1, scales = "free_y")
+```
+
+![](lab5_files/figure-commonmark/unnamed-chunk-12-1.png)

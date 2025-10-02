@@ -129,4 +129,3 @@ titanic |>
   geom_histogram(bins = 100) +
   facet_wrap(~ticket_class, ncol = 1, scales = "free_y")
 ```
-
