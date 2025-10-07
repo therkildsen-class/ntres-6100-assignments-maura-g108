@@ -1,0 +1,14 @@
+---
+format: gfm
+editor: visual
+---
+
+```{r}
+# Load required packages
+library(tidyverse)
+library(knitr)
+
+# Read in the data
+whales <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/main/datasets/whales.csv")
+whales |> head() |> kable()
+```
