@@ -141,7 +141,9 @@ Before cleaning:
 #| message: false
 #| warning: false
 q2.2unclean <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/2015y_Weather_Station.csv")
-q2.2unclean
+q2.2unclean |> 
+  head(6) |> 
+  select(1:10)
 ```
 
 
@@ -169,7 +171,9 @@ q2.2clean <- q2.2unclean |>
   mutate(hour = hms::parse_hms(paste0(hour, ":00:00")),
          date = ymd(date))
 
-q2.2clean
+q2.2clean |> 
+  head(6) |> 
+  select(1:10)
 ```
 
 <br>

@@ -167,26 +167,20 @@ Before cleaning:
 
 ``` r
 q2.2unclean <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/2015y_Weather_Station.csv")
-q2.2unclean
+q2.2unclean |> 
+  head(6) |> 
+  select(1:10)
 ```
 
-    ## # A tibble: 5,460 × 27
-    ##    date       station item    `00`  `01`   `02`   `03` `04`    `05`   `06`  `07`
-    ##    <date>     <chr>   <chr>  <dbl> <dbl>  <dbl>  <dbl> <chr>  <dbl>  <dbl> <dbl>
-    ##  1 2015-01-01 Cailiao AMB_…  16     16    15     15    15     14     14     14  
-    ##  2 2015-01-01 Cailiao CO      0.74   0.7   0.66   0.61 0.51    0.51   0.51   0.6
-    ##  3 2015-01-01 Cailiao NO      1      0.8   1.1    1.7  2       1.7    1.9    2.4
-    ##  4 2015-01-01 Cailiao NO2    15     13    13     12    11     13     13     16  
-    ##  5 2015-01-01 Cailiao NOx    16     14    14     13    13     15     15     18  
-    ##  6 2015-01-01 Cailiao O3     35     36    35     34    34     32     30     26  
-    ##  7 2015-01-01 Cailiao PM10  171    174   160    142    123   110    104    104  
-    ##  8 2015-01-01 Cailiao PM2.5  76     78    69     60    52     44     40     41  
-    ##  9 2015-01-01 Cailiao RAIN…  NA     NA    NA     NA    NR     NA     NA     NA  
-    ## 10 2015-01-01 Cailiao RH     57     57    58     59    59     57     57     56  
-    ## # ℹ 5,450 more rows
-    ## # ℹ 16 more variables: `08` <chr>, `09` <chr>, `10` <chr>, `11` <chr>,
-    ## #   `12` <chr>, `13` <chr>, `14` <chr>, `15` <chr>, `16` <chr>, `17` <chr>,
-    ## #   `18` <chr>, `19` <dbl>, `20` <chr>, `21` <dbl>, `22` <dbl>, `23` <dbl>
+    ## # A tibble: 6 × 10
+    ##   date       station item      `00`  `01`  `02`  `03` `04`   `05`  `06`
+    ##   <date>     <chr>   <chr>    <dbl> <dbl> <dbl> <dbl> <chr> <dbl> <dbl>
+    ## 1 2015-01-01 Cailiao AMB_TEMP 16     16   15    15    15    14    14   
+    ## 2 2015-01-01 Cailiao CO        0.74   0.7  0.66  0.61 0.51   0.51  0.51
+    ## 3 2015-01-01 Cailiao NO        1      0.8  1.1   1.7  2      1.7   1.9 
+    ## 4 2015-01-01 Cailiao NO2      15     13   13    12    11    13    13   
+    ## 5 2015-01-01 Cailiao NOx      16     14   14    13    13    15    15   
+    ## 6 2015-01-01 Cailiao O3       35     36   35    34    34    32    30
 
 <br>
 
@@ -209,25 +203,20 @@ q2.2clean <- q2.2unclean |>
   mutate(hour = hms::parse_hms(paste0(hour, ":00:00")),
          date = ymd(date))
 
-q2.2clean
+q2.2clean |> 
+  head(6) |> 
+  select(1:10)
 ```
 
-    ## # A tibble: 8,736 × 18
-    ##    date       station hour   AMB_TEMP    CO    NO   NO2   NOx    O3  PM10 PM2.5
-    ##    <date>     <chr>   <time>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-    ##  1 2015-01-01 Cailiao 00:00        16  0.74   1      15    16    35   171    76
-    ##  2 2015-01-01 Cailiao 01:00        16  0.7    0.8    13    14    36   174    78
-    ##  3 2015-01-01 Cailiao 02:00        15  0.66   1.1    13    14    35   160    69
-    ##  4 2015-01-01 Cailiao 03:00        15  0.61   1.7    12    13    34   142    60
-    ##  5 2015-01-01 Cailiao 04:00        15  0.51   2      11    13    34   123    52
-    ##  6 2015-01-01 Cailiao 05:00        14  0.51   1.7    13    15    32   110    44
-    ##  7 2015-01-01 Cailiao 06:00        14  0.51   1.9    13    15    30   104    40
-    ##  8 2015-01-01 Cailiao 07:00        14  0.6    2.4    16    18    26   104    41
-    ##  9 2015-01-01 Cailiao 08:00        14  0.62   3.4    16    19    26   109    44
-    ## 10 2015-01-01 Cailiao 09:00        15  0.58   3.7    14    18    29   105    44
-    ## # ℹ 8,726 more rows
-    ## # ℹ 7 more variables: RAINFALL <dbl>, RH <dbl>, SO2 <dbl>, WD_HR <dbl>,
-    ## #   WIND_DIREC <dbl>, WIND_SPEED <dbl>, WS_HR <dbl>
+    ## # A tibble: 6 × 10
+    ##   date       station hour   AMB_TEMP    CO    NO   NO2   NOx    O3  PM10
+    ##   <date>     <chr>   <time>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+    ## 1 2015-01-01 Cailiao 00:00        16  0.74   1      15    16    35   171
+    ## 2 2015-01-01 Cailiao 01:00        16  0.7    0.8    13    14    36   174
+    ## 3 2015-01-01 Cailiao 02:00        15  0.66   1.1    13    14    35   160
+    ## 4 2015-01-01 Cailiao 03:00        15  0.61   1.7    12    13    34   142
+    ## 5 2015-01-01 Cailiao 04:00        15  0.51   2      11    13    34   123
+    ## 6 2015-01-01 Cailiao 05:00        14  0.51   1.7    13    15    32   110
 
 <br>
 
