@@ -24,7 +24,7 @@ Import the data frames listed below into R and [parse](https://r4ds.had.co.nz/da
 
 `tribble()`:
 
-```{r}
+```{r comment="##"}
 #| echo: true
 #| message: false
 #| warning: false
@@ -36,7 +36,7 @@ tribble(
 ```
 `tibble()`:
 
-```{r}
+```{r comment="##"}
 #| echo: true
 #| message: false
 #| warning: false
@@ -52,7 +52,7 @@ tibble(
 
 #### 1.2 Import `https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/dataset2.txt` into R. Change the column names into “Name”, “Weight”, “Price”.
 
-```{r}
+```{r comment="##"}
 #| echo: true
 #| message: false
 #| warning: false
@@ -65,7 +65,7 @@ print(q1.2)
 
 #### 1.3 Import `https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/dataset3.txt` into R. Watch out for the first few lines, missing values, separators, quotation marks, and deliminaters.
 
-```{r}
+```{r comment="##"}
 #| echo: true
 #| message: false
 #| warning: false
@@ -94,7 +94,7 @@ Protection Administration, Executive Yuan, R.O.C. (Taiwan).
 
 <br>
 
-```{r}
+```{r comment="##"}
 #| echo: true
 #| message: false
 #| warning: false
@@ -136,7 +136,7 @@ warning messages are not necessarily signs of trouble.*
 
 Before cleaning:
 
-```{r}
+```{r comment="##"}
 #| echo: true
 #| message: false
 #| warning: false
@@ -149,7 +149,7 @@ q2.2unclean
 
 After cleaning:
 
-```{r}
+```{r comment="##"}
 #| echo: true
 #| message: false
 #| warning: false
@@ -176,7 +176,7 @@ q2.2clean
 
 #### 2.3 Using this cleaned dataset, plot the daily variation in ambient temperature on September 25, 2015, as shown below.
 
-```{r}
+```{r comment="##"}
 #| echo: true
 #| message: false
 #| warning: false
@@ -192,7 +192,7 @@ q2.3
 
 #### 2.4 Plot the daily average ambient temperature throughout the year with a **continuous line**, as shown below.
 
-```{r}
+```{r comment="##"}
 #| echo: true
 #| message: false
 #| warning: false
@@ -211,7 +211,7 @@ q2.4
 
 *Hint: separating date into three columns might be helpful.*
 
-```{r}
+```{r comment="##"}
 #| echo: true
 #| message: false
 #| warning: false
@@ -233,7 +233,7 @@ q2.5
 *Hint: uniting the date and hour and parsing the new variable might be
 helpful.*
 
-```{r}
+```{r comment="##"}
 #| echo: true
 #| message: false
 #| warning: false
