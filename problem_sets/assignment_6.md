@@ -166,21 +166,21 @@ warning messages are not necessarily signs of trouble.*
 Before cleaning:
 
 ``` r
-q2.2unclean <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/2015y_Weather_Station.csv")
+q2.2unclean <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/2015y_Weather_Station.csv", col_types = cols(.default = "c"))
 q2.2unclean |> 
   head(6) |> 
   select(1:10)
 ```
 
     ## # A tibble: 6 × 10
-    ##   date       station item      `00`  `01`  `02`  `03` `04`   `05`  `06`
-    ##   <date>     <chr>   <chr>    <dbl> <dbl> <dbl> <dbl> <chr> <dbl> <dbl>
-    ## 1 2015-01-01 Cailiao AMB_TEMP 16     16   15    15    15    14    14   
-    ## 2 2015-01-01 Cailiao CO        0.74   0.7  0.66  0.61 0.51   0.51  0.51
-    ## 3 2015-01-01 Cailiao NO        1      0.8  1.1   1.7  2      1.7   1.9 
-    ## 4 2015-01-01 Cailiao NO2      15     13   13    12    11    13    13   
-    ## 5 2015-01-01 Cailiao NOx      16     14   14    13    13    15    15   
-    ## 6 2015-01-01 Cailiao O3       35     36   35    34    34    32    30
+    ##   date       station item     `00`  `01`  `02`  `03`  `04`  `05`  `06` 
+    ##   <chr>      <chr>   <chr>    <chr> <chr> <chr> <chr> <chr> <chr> <chr>
+    ## 1 2015/01/01 Cailiao AMB_TEMP 16    16    15    15    15    14    14   
+    ## 2 2015/01/01 Cailiao CO       0.74  0.7   0.66  0.61  0.51  0.51  0.51 
+    ## 3 2015/01/01 Cailiao NO       1     0.8   1.1   1.7   2     1.7   1.9  
+    ## 4 2015/01/01 Cailiao NO2      15    13    13    12    11    13    13   
+    ## 5 2015/01/01 Cailiao NOx      16    14    14    13    13    15    15   
+    ## 6 2015/01/01 Cailiao O3       35    36    35    34    34    32    30
 
 <br>
 

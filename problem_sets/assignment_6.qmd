@@ -140,7 +140,7 @@ Before cleaning:
 #| echo: true
 #| message: false
 #| warning: false
-q2.2unclean <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/2015y_Weather_Station.csv")
+q2.2unclean <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/2015y_Weather_Station.csv", col_types = cols(.default = "c"))
 q2.2unclean |> 
   head(6) |> 
   select(1:10)
