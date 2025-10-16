@@ -278,8 +278,8 @@ the 2016 election?
 #| echo: true
 #| message: false
 #| warning: false
-#| fig-width: 6
 #| fig-height: 7
+#| fig-width: 6
 q_4c <- q_4b |> 
   ggplot(aes(x = polling_error, y = state)) +
   geom_point(aes(color = result, size = electoral_votes))
