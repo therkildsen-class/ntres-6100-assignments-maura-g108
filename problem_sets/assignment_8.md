@@ -202,7 +202,7 @@ system.time(for (i in 1:length(dinosaur_lengths)) {
 ```
 
     ##    user  system elapsed 
-    ##       0       0       0
+    ##    0.00    0.00    0.01
 
 <br>
 
@@ -214,5 +214,237 @@ from days to minutes.
 **Note:** the actual runtime depends on the computing power of your
 computer, so there may not be a noticeable difference between the two
 approaches if your computer is sufficiently fast.
+
+<br>
+
+## Exercise 2: Data inputting and wrangling in batch
+
+Another instance where loops are useful is data input / output in batch.
+We’ve learned how to make plots and output them in batch in class, so in
+this exercise, you will use for loops to automate the inputting and
+wrangling process of a group of datasets with similar names and formats
+in the
+<https://github.com/nt246/NTRES-6100-data-science/tree/master/datasets/buoydata>.
+
+#### 2.1 Given the following code chunk for reading buoy data files from buoy 44013 for each year, describe the following:
+
+- What parts of your code are consistent across every line/code chunk?
+- What parts are different?
+
+``` r
+buoy_1987 <- read_csv('https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/buoydata/44013_1987.csv', na = c("99", "999", "99.00", "999.0"))
+buoy_1988 <- read_csv('https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/buoydata/44013_1988.csv', na = c("99", "999", "99.00", "999.0"))
+buoy_1989 <- read_csv('https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/buoydata/44013_1989.csv', na = c("99", "999", "99.00", "999.0"))
+buoy_1990 <- read_csv('https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/buoydata/44013_1990.csv', na = c("99", "999", "99.00", "999.0"))
+```
+
+Answer: *Everything is consistent except for the year at the end of the
+path (\_1987, \_1988, etc) and the variable names of course.*
+
+<br>
+
+<br>
+
+#### 2.2 Complete the skeleton of the for loop below, which uses the `str_c()` function to print out the path to the buoy 44013 data file from year `start` to `end`
+
+``` r
+start <- 1987
+end <- 1992
+for (year in start:end){
+  path <- str_c("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/buoydata/44013_", year, ".csv", sep = "")
+  print(path)
+}
+```
+
+    ## [1] "https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/buoydata/44013_1987.csv"
+    ## [1] "https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/buoydata/44013_1988.csv"
+    ## [1] "https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/buoydata/44013_1989.csv"
+    ## [1] "https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/buoydata/44013_1990.csv"
+    ## [1] "https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/buoydata/44013_1991.csv"
+    ## [1] "https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/buoydata/44013_1992.csv"
+
+<br>
+
+#### 2.3 Complete the skeleton of the for loop below, which reads the buoy 44013 data file from year `start` to `end` and combine them together
+
+**Hint:** `bind_rows()` could be useful for this question.
+
+``` r
+start <- 1987
+end <- 1992
+df_combined <- NULL
+for (year in start:end){
+  path <- str_c("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/buoydata/44013_", year, ".csv", sep = "")
+  df <- read_csv(path)
+  df_combined <- bind_rows(df_combined, df)
+}
+dim(df_combined)
+```
+
+    [1] 49775    16
+
+Here is the dimension of the combined data frame (`df_combined`) with
+`start = 1987` and `end = 1992`:
+
+``` r
+dim(df_combined)
+```
+
+    ## [1] 49775    16
+
+<br>
+
+#### 2.4 Building on the workflow that you used in 2.1 - 2.3, use a for loop to read in, clean up, and summarize the buoy data from all years from 1987 to 1992 using a dplyr workflow.
+
+Within the loop, for each year, **read** in the data, **select** only
+the columns `YY` (year), `MM` (month), `WVHT` (wave heights), `WTMP`
+(temperatures) and **rename** these columns to something understandable,
+and **summarize** monthly averaged wave heights and temperatures
+throughout that year. **Combine** these summary tables from different
+years together and **plot the variation of these monthly averaged values
+through time** as shown below.
+
+There are multiple ways to do this, and for this question, you may as
+well combine all the raw data in a for loop and clean it up after the
+loop. We recommend you to do the cleanup within the loop though as a
+chance to practice. In the next (optional) question, however, it is
+necessary to clean up the data in the loop before you can combine them.
+
+``` r
+start <- 1987
+end <- 1992
+df_combined <- NULL
+for (year in start:end){
+  path <- str_c("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/buoydata/44013_", year, ".csv", sep = "")
+  df <- read_csv(path) |> 
+    select(YY, MM, WVHT, WTMP) |> 
+    rename(years = YY, month = MM, wave_heights = WVHT, temperature = WTMP) |> 
+     filter( # There are values that are like 999 for some reason so I am removing those
+      temperature < 50,
+      wave_heights < 20
+    ) |> 
+    mutate(years = as.numeric(paste0("19", years))) |> 
+    group_by(years, month) |> 
+    summarise(temperature_c_mean = mean(temperature, na.rm = T), wave_height_mean = mean(wave_heights, na.rm = T))
+  df_combined <- bind_rows(df_combined, df)
+}
+
+df_plot_temp <- df_combined |> 
+  mutate(year_month = as.Date(paste(years, month, "10", sep = "-"))) |>  # use 10 as a random day placeholder
+  ggplot(aes(x = year_month, y = temperature_c_mean)) +
+  geom_line() +
+  geom_point() +
+  labs(title = "Monthly average temperate from 1987 to 1992")
+
+df_plot_temp
+```
+
+![](assignment_8_files/figure-commonmark/unnamed-chunk-14-1.png)
+
+``` r
+df_plot_wave <- df_combined |> 
+  mutate(year_month = as.Date(paste(years, month, "10", sep = "-"))) |>  # use 10 as a random day placeholder
+  ggplot(aes(x = year_month, y = wave_height_mean)) +
+  geom_line() +
+  geom_point() +
+  labs(title = "Monthly average wave height from 1987 to 1992")
+
+df_plot_wave
+```
+
+![](assignment_8_files/figure-commonmark/unnamed-chunk-14-2.png)
+
+<br>
+
+#### **Reflection Questions:**
+
+<br>
+
+#### When is vectorization preferable to loops in R, and when are loops the right choice? Provide two concrete examples from the assignment.
+
+Answer: *Vectorization is preferable to loops when an operation can be
+applied to an entire vector or column at once. It is much slower to loop
+through individual calculations when R can process them in bulk
+internally. We saw this in Question 1.2, where the vectorized version
+ran faster than the loop. While the difference may be small for tiny
+datasets, it becomes substantial with large ones.*
+
+*Loops, on the other hand, are useful when the task involves repetition
+that isn’t inherently vectorized. In this assignment, for example, we
+used a loop to efficiently read in all of the yearly datasets. This
+approach avoided writing the same code multiple times and allowed us to
+automate the process. In short, loops are ideal when you need to repeat
+a set of actions, while vectorization is best for performing the same
+calculation across large sets of data.*
+
+<br>
+
+#### Which AI prompt was most helpful? What did you learn, and how was correctness verified? Include before/after code snippets with commentary.
+
+Answer: *I used AI to help me debug an error (found in AI_log.md). It
+essentially told me that the function I was trying to use did not exist
+(I thought that`group_by()` was actually `sort_by()`). I changed the
+function to the correct name, and I visually inspected the dataset using
+`View()` to confirm that the function did what I wanted.*
+
+``` r
+# The original code looked like this:
+
+start <- 1987
+
+end <- 1992
+
+df_combined <- NULL
+
+for (year in start:end){
+
+  path <- str_c("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/buoydata/44013_", year, ".csv", sep = "")
+
+  df <- read_csv(path) |> 
+
+    select(YY, MM, WVHT, WTMP) |> 
+
+    rename(years = YY, month = MM, wave_heights = WVHT, temperature = WTMP) |> 
+
+    sort_by(month) |> # This is the problematic line of code. You can see it is the wrong function
+
+    summarise(temperature_c_mean = mean(temperature), wave_height_mean = mean(wave_heights))
+
+  df_combined <- bind_rows(df_combined, df)
+
+}
+```
+
+*I could not figure out what this error message meant, so I asked
+ChatGPT. It then told me the correct function to use, and replaced the
+line for me.*
+
+``` r
+# This is what my code looked like in the beginning for question 2.4. After I got this error fixed, I went on to edit the code more to finish question 2.4 and did not have any more issues. 
+
+start <- 1987
+
+end <- 1992
+
+df_combined <- NULL
+
+for (year in start:end){
+
+  path <- str_c("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/buoydata/44013_", year, ".csv", sep = "")
+
+  df <- read_csv(path) |> 
+
+    select(YY, MM, WVHT, WTMP) |> 
+
+    rename(years = YY, month = MM, wave_heights = WVHT, temperature = WTMP) |> 
+
+    group_by(years, month) |> # This is the altered line of code
+
+    summarise(temperature_c_mean = mean(temperature), wave_height_mean = mean(wave_heights))
+
+  df_combined <- bind_rows(df_combined, df)
+
+}
+```
 
 <br>

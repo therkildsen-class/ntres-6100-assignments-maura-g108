@@ -1,0 +1,63 @@
+
+
+## Tool(s) used:
+
+- ChatGPT
+
+## Prompt(s):
+
+- “start \<- 1987
+
+  end \<- 1992
+
+  df_combined \<- NULL
+
+  for (year in start:end){
+
+  path \<-
+  str_c(“https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/buoydata/44013\_”,
+  year, “.csv”, sep = ““)
+
+  df \<- read_csv(path) \|\>
+
+  select(YY, MM, WVHT, WTMP) \|\>
+
+  rename(years = YY, month = MM, wave_heights = WVHT, temperature =
+  WTMP) \|\>
+
+  sort_by(month) \|\>
+
+  summarise(temperature_c_mean = mean(temperature), wave_height_mean =
+  mean(wave_heights))
+
+  df_combined \<- bind_rows(df_combined, df)
+
+  }
+
+  Error in df_combined :
+
+  The pipe operator requires a function call as RHS (\<input\>:8:3)
+
+  Error during wrapup: not that many frames on the stack
+
+  Error: no more error handlers available (recursive errors?); invoking
+  ‘abort’ restart  
+    
+  Why is this code not working?”
+
+## AI output summary:
+
+- It says there is no sort_by() function and that I might have meant
+  group_by().
+
+## Edits made and rationale:
+
+- I edited the function to read as group_by() and also read the
+  documentation for this function to make sure I am using it correctly.
+  I changed this because I had initially misremembered what the function
+  was called. Now, I remember function.
+
+## Verification:
+
+- The code ran after that. In the console, I typed in View(df_combined)
+  to make sure the dataframe looks as I want, which it did.
