@@ -6,6 +6,7 @@ editor: visual
 ## Tool(s) used:
 
 -   ChatGPT
+-   Claude
 
 ## Prompt(s):
 
@@ -43,14 +44,21 @@ editor: visual
     \
     Why is this code not working?"
 
+-   "mtcars_plot \<- mtcars_tbl \|\> mutate(model = fct_reorder(model, mpg), cyl = as.factor(cyl)) \|\> ggplot(aes(x = mpg, y = model, size = hp, color = cyl)) + geom_point() + geom_text(aes(label = model), hjust = -0.1) + labs(x = "Miles per gallon fuel consumption", y = NULL, size = "Horsepower", color = "Number of cylinders") mtcars_plot
+
+    I want the number of cylinders to be in reverse order"
+
 ## AI output summary:
 
 -   It says there is no sort_by() function and that I might have meant group_by().
+-   Claude said that I can use fct_rev() when I am setting cyl to a factor.
 
 ## Edits made and rationale:
 
 -   I edited the function to read as group_by() and also read the documentation for this function to make sure I am using it correctly. I changed this because I had initially misremembered what the function was called. Now, I remember function.
+-   I added the fct_rev() function in order to match the graph on the assignment.
 
 ## Verification:
 
 -   The code ran after that. In the console, I typed in View(df_combined) to make sure the dataframe looks as I want, which it did.
+-   The code simply ran as I expected, and the graph looked as I expected.
