@@ -1,0 +1,133 @@
+---
+format: gfm
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+dna_or_rna <- function(sequence){
+   bases <- str_split(sequence, pattern = "") %>%
+     unlist() %>%
+     unique()
+   if (all(bases %in% c("a", "t", "g", "c")) & "t" %in% bases){
+     return("DNA")
+   } else if (all(bases %in% c("a", "u", "g", "c")) & "u" %in% bases){
+     return("RNA")
+   } else {
+     return("unknown")
+   }
+ }
+```
+
+```{r}
+dna_or_rna("attggc")
+dna_or_rna("gccaau")
+dna_or_rna("ccagac")
+dna_or_rna("tgcacug")
+```
+
+```{r}
+sequences = c("ttgaatgccttacaactgatcattacacaggcggcatgaagcaaaaatatactgtgaaccaatgcaggcg", 
+              "gauuauuccccacaaagggagugggauuaggagcugcaucauuuacaagagcagaauguuucaaaugcau", 
+              "gaaagcaagaaaaggcaggcgaggaagggaagaagggggggaaacc", 
+              "guuuccuacaguauuugaugagaaugagaguuuacuccuggaagauaauauuagaauguuuacaacugcaccugaucagguggauaaggaagaugaagacu", 
+              "gataaggaagaugaagacutucaggaaucuaauaaaaugcacuccaugaauggauucauguaugggaaucagccggguc")
+```
+
+```{r}
+sequence_type <- vector("double", length(sequences))
+for (i in seq_along(sequences)){
+  sequence_type[i] <- dna_or_rna(sequences[i])
+}
+sequence_type
+```
+
+```{r}
+map_chr(sequences, dna_or_rna)
+```
+
+```{r}
+dna_or_rna <- function(sequence){
+   bases <- str_split(sequence, pattern = "") %>%
+     unlist() %>%
+     tolower() %>%
+     unique()
+   if (all(bases %in% c("a", "t", "g", "c")) & "t" %in% bases){
+     return("DNA")
+   } else if (all(bases %in% c("a", "u", "g", "c")) & "u" %in% bases){
+     return("RNA")
+   } else {
+     return("unknown")
+   }
+ }
+```
+
+```{r}
+dna_or_rna("ATTGGC")
+dna_or_rna("gCCAAu")
+dna_or_rna("ggcacgG")
+```
+
+```{r}
+round_away <- function(x, digits=0){
+   x_new<-abs(x*10^digits)
+   x_sign <- sign(x)
+   integer <- x_new%/%1
+   decimal <- x_new-integer
+   if(decimal<0.5){
+     x_new <- integer
+   } else {
+     x_new <- integer +1
+   }
+   x_rounded <- x_new/10^digits*x_sign
+   return(x_rounded)
+ }
+```
+
+```{r}
+round_away(0.55, digits=0)
+round_away(2.45, digits=0) 
+round_away(-0.55, digits=0)
+round_away(-2.45, digits=0) 
+round_away(0.55, digits=1)
+round_away(2.45, digits=1) 
+round_away(-0.55, digits=1)
+round_away(-2.45, digits=1) 
+```
+
+```{r}
+round_even <- function(x, digits=0){
+   x_new<-abs(x*10^digits)
+   x_sign <- sign(x)
+   integer <- x_new%/%1
+   decimal <- x_new-integer
+   if(decimal<0.5){
+     x_new <- integer
+   } else if (decimal ==0.5){
+     if(integer%%2==0){
+       x_new <- integer 
+     } else {
+       x_new <- integer +1
+     }
+   } else {
+       x_new <- integer +1
+   }
+   x_rounded <- x_new/10^digits*x_sign
+   return(x_rounded)
+ }
+```
+
+```{r}
+round_even(0.55, digits=0)
+round_even(2.45, digits=0) 
+round_even(-0.55, digits=0)
+round_even(-2.45, digits=0) 
+round_even(0.55, digits=1)
+round_even(2.45, digits=1) 
+round_even(-0.55, digits=1)
+round_even(-2.45, digits=1)
+```
+
